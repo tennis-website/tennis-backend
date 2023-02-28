@@ -3,7 +3,7 @@ require('dotenv').config();
 
 require('./models/test.model');
 require('./models/user.model');
-
+require('./models/lesson.model')
 const app = require('./app');
 const mongoose = require('mongoose');
 
@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 8080;
 const mongoUri = process.env.MONGO_URI
 //for gcloud make sure to not use env
 //const mongoUri = url here
-mongoose.connect("mongodb+srv://Jai_Garg:H3wHp60utQZeZNpN@tennisinitiativecluster.t5zacqa.mongodb.net/?retryWrites=true&w=majority");
+mongoose.connect("mongodb+srv://Jai_Garg:H3wHp60utQZeZNpN@tennisinitiativecluster.t5zacqa.mongodb.net/?retryWrites=true&w=majority", {dbName: 'TennisInitiativeDB'} );
 
 mongoose.connection.on('connected', () => {
     console.log('Connected to mongo instance');

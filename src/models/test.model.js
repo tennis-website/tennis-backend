@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const test = new mongoose.Schema({
+const testSchema = new mongoose.Schema({
     message: {
         type: String,
         required: true
@@ -11,4 +11,4 @@ const test = new mongoose.Schema({
     }
 })
 
-mongoose.model('test', test);
+mongoose.model('test', testSchema);
