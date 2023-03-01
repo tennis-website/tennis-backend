@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const lessonmodel = mongoose.model('lesson');
 
 async function makeLesson(req, res){
-    const { date,instructors,students,studentsNames, location, maxStudents} = req.body;
+    const { date,instructors,students,studentsNames, location,address, coordinates, maxStudents} = req.body;
     try{
         var myId = mongoose.Types.ObjectId()
 
@@ -13,6 +13,8 @@ async function makeLesson(req, res){
             instructors: instructors, 
             students: students,
             studentsNames: studentsNames,
+            address: address,
+            coordinates: coordinates,
             location: String(location)
         })
         return res.json(myId)
@@ -98,6 +100,12 @@ async function patchLesson(req, res){
         }
         if(req.body.instructors != undefined){
             lesson.instructors = req.body.instructors
+        }
+        if(req.body.address != undefined){
+            lesson.address = req.body.address
+        }
+        if(req.body.coordinates != undefined){
+            lesson.coordinates = req.body.coordinates
         }
         if(req.body.students != undefined){
             lesson.students = req.body.students
