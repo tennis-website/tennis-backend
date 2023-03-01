@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const usermodel = mongoose.model('user');
 
 async function makeUser(req, res){
-    const { email,password,username} = req.body;
+    const { email,password,username,emailList } = req.body;
     try{
         var myId = mongoose.Types.ObjectId()
 
@@ -10,7 +10,8 @@ async function makeUser(req, res){
             _id: myId,
             email: String(email), 
             password: String(password), 
-            username: String(username)
+            username: String(username),
+            emailList: Boolean(emailList),
         })
         return res.json(myId)
     }
@@ -74,6 +75,9 @@ async function patchUser(req, res){
         }
         if(req.body.username != undefined){
             user.username = req.body.username
+        }
+        if(req.body.emailList != undefined){
+            user.emailList = req.body.emailList
         }
         if(req.body.password != undefined){
             user.password = req.body.password

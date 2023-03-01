@@ -7,6 +7,7 @@ require('./models/lesson.model')
 const app = require('./app');
 const mongoose = require('mongoose');
 
+
 // Use Port 8080 for google cloud
 //const PORT = 3000;
 const PORT = process.env.PORT || 8080;
@@ -15,6 +16,8 @@ const mongoUri = process.env.MONGO_URI
 //for gcloud make sure to not use env
 //const mongoUri = url here
 mongoose.connect("mongodb+srv://Jai_Garg:H3wHp60utQZeZNpN@tennisinitiativecluster.t5zacqa.mongodb.net/?retryWrites=true&w=majority", {dbName: 'TennisInitiativeDB'} );
+
+require("./agendaJobs/agenda")
 
 mongoose.connection.on('connected', () => {
     console.log('Connected to mongo instance');
