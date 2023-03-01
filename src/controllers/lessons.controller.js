@@ -2,12 +2,13 @@ const mongoose = require('mongoose');
 const lessonmodel = mongoose.model('lesson');
 
 async function makeLesson(req, res){
-    const { date,instructors,students,studentsNames, location} = req.body;
+    const { date,instructors,students,studentsNames, location, maxStudents} = req.body;
     try{
         var myId = mongoose.Types.ObjectId()
 
         await lessonmodel.create({ 
             _id: myId,
+            maxStudents: maxStudents,
             date: Date(date), 
             instructors: instructors, 
             students: students,
@@ -91,6 +92,9 @@ async function patchLesson(req, res){
         lesson = await lessonmodel.findOne(query)
         if(req.body.date != undefined){
             lesson.date = req.body.date
+        }
+        if(req.body.maxStudents != undefined){
+            lesson.maxStudents = req.body.maxStudents
         }
         if(req.body.instructors != undefined){
             lesson.instructors = req.body.instructors

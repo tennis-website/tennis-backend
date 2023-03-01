@@ -14,6 +14,10 @@ const lessonSchema = new mongoose.Schema({
     studentsNames: [
         { type: String },
     ],
+    maxStudents:{
+        type: String,
+        required: false
+    },
     location: {
         type: String,
         required: false
