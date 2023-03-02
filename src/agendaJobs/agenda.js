@@ -1,7 +1,7 @@
 require("dotenv").config();
 
 require("./definitions/sendAnnouncement")
-const uri = process.env.MONGO_URI;
+const uri = "mongodb+srv://Jai_Garg:H3wHp60utQZeZNpN@tennisinitiativecluster.t5zacqa.mongodb.net/?retryWrites=true&w=majority";
 const { allDefinitions } = require("./definitions");
 const Agenda = require('agenda');
 const agenda = new Agenda({

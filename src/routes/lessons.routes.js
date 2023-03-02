@@ -7,7 +7,8 @@ const{
     getLessonsbyStudentID,
     getLessonsbyStudentName,
     patchLessonAddStudent,
-    patchLesson
+    patchLesson,
+    getAllLessons
 }= require("../controllers/lessons.controller")
 
 lessonRouter.post('/api/lesson', makeLesson);
@@ -16,6 +17,7 @@ lessonRouter.patch('/api/lesson', patchLesson)
 lessonRouter.get('/api/lessonsByStudentID', getLessonsbyStudentID);
 lessonRouter.get('/api/lessonsByStudentName', getLessonsbyStudentName);
 lessonRouter.patch('/api/lessonAddStudent', patchLessonAddStudent)
+lessonRouter.get('/api/allLessons', getAllLessons)
 
 
 module.exports = lessonRouter;

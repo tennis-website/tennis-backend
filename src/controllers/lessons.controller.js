@@ -2,14 +2,17 @@ const mongoose = require('mongoose');
 const lessonmodel = mongoose.model('lesson');
 
 async function makeLesson(req, res){
-    const { date,instructors,students,studentsNames, location,address, coordinates, maxStudents} = req.body;
+    var { date,instructors,students,studentsNames, location,address, coordinates, maxStudents} = req.body;
     try{
         var myId = mongoose.Types.ObjectId()
-
+        if(typeof(date) == "number"){
+            date = new Date(date * 1000)
+            console.log(date)
+        }
         await lessonmodel.create({ 
             _id: myId,
             maxStudents: maxStudents,
-            date: Date(date), 
+            date: date, 
             instructors: instructors, 
             students: students,
             studentsNames: studentsNames,
@@ -17,7 +20,7 @@ async function makeLesson(req, res){
             coordinates: coordinates,
             location: String(location)
         })
-        return res.json(myId)
+        return res.json(date)
     }
     catch(err){
         console.log(err)
@@ -124,11 +127,29 @@ async function patchLesson(req, res){
         res.status(422).send({ error: err.message })
     }
 }
+async function getAllLessons(req, res){
+    try{
+        let lessons = await lessonmodel.find({})
+        let final = []
+        for(let i = 0; i<lessons.length; i++){
+            if(lessons[i].date >= Date.now()){
+                final.push(lessons[i]);
+            }
+        }
+        return res.json(final);
+    }
+    catch(err){
+        console.log(err)
+        res.status(422).send({ error: err.message })
+    }
+}
+
 module.exports = {
     makeLesson,
     getLessonbyID,
     getLessonsbyStudentID,
     getLessonsbyStudentName,
     patchLessonAddStudent,
-    patchLesson
+    patchLesson,
+    getAllLessons
 }
