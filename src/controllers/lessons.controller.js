@@ -20,7 +20,7 @@ async function makeLesson(req, res){
             coordinates: coordinates,
             location: String(location)
         })
-        return res.json(date)
+        return res.json(myId)
     }
     catch(err){
         console.log(err)
