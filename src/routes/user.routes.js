@@ -13,7 +13,7 @@ userRouter.post('/api/user', makeUser);
 userRouter.get('/api/user', getUser);
 userRouter.patch('/api/user', patchUser)
 userRouter.get('/api/authUsername', authenticateUsername);
-userRouter.get('/api/authPassword', authenticatePassword);
+userRouter.post('/api/authPassword', authenticatePassword);
 
 
 module.exports = userRouter;

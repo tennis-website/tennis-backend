@@ -39,9 +39,10 @@ async function authenticateUsername(req,res){
 }
 
 async function authenticatePassword(req,res){
-    const {username, password} = req.query;
+    const {username, password} = req.body;
     try{
         var query = {username: username, password: password}
+        console.log(username)
         var user = await usermodel.findOne(query)
         if(user != undefined){
             return res.json(user._id)
