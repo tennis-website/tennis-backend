@@ -41,7 +41,14 @@ async function authenticateUsername(req,res){
 async function authenticatePassword(req,res){
     const {username, password} = req.body;
     try{
-        if(username.indexOf("@") == -1){
+        if(username == undefined){
+            return res.status(402).send({ error: "Missing Username" })
+
+        }
+        else if(password == undefined){
+            return res.status(401).send({ error: "Missing Password" })
+        }
+        else if(username.indexOf("@") == -1){
             var query = {username: username, password: password}
             var user = await usermodel.findOne(query)
             if(user != undefined){
