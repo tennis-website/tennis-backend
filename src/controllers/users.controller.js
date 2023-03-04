@@ -34,10 +34,10 @@ async function authenticateUser(req,res){
         else if(password == undefined || password === ""){
             return res.status(401).send({ error: "Missing Password" })
         }
-        else if(username.length() <4){
+        else if(username.length <4){
             return res.status(398).send({ error: "Short Username" })
         }
-        else if(password.length() <6){
+        else if(password.length <6){
             return res.status(399).send({ error: "Short Password" })
         }
         var query = {email: email}
