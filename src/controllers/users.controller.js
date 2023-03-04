@@ -30,7 +30,6 @@ async function authenticateUser(req,res){
         }
         else if(username == undefined || username === ""){
             return res.status(402).send({ error: "Missing Username" })
-
         }
         else if(password == undefined || password === ""){
             return res.status(401).send({ error: "Missing Password" })
@@ -44,12 +43,12 @@ async function authenticateUser(req,res){
         var query = {username: username}
         var users = await usermodel.find(query)
         if(users.length>0){
-            return res.status(398).send({ error: "Username Taken" })
+            return res.status(397).send({ error: "Username Taken" })
         }
         var query = {email: email}
         var emails = await usermodel.find(query)
         if(emails.length>0){
-            return res.status(397).send({ error: "Email Taken" })
+            return res.status(396).send({ error: "Email Taken" })
         }
         return res.json("Valid User")
     }
