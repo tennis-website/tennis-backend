@@ -47,7 +47,7 @@ async function authenticatePassword(req,res){
         if(user != undefined){
             return res.json(user._id)
         }
-        return res.json("Incorrect Password")
+        return res.status(400).send({ error: "Incorrect Password" })
     }
     catch(err){
         console.log(err)
