@@ -25,30 +25,30 @@ async function makeUser(req, res){
 async function authenticateUser(req,res){
     const {username, email, password} = req.body;
     try{
-        if(email == undefined || email === ""){
-            return res.status(403).send({ error: "Missing Email" })
-        }
-        else if(username == undefined || username === ""){
+        if(username == undefined || username === ""){
             return res.status(402).send({ error: "Missing Username" })
+        }
+        else if(email == undefined || email === ""){
+            return res.status(403).send({ error: "Missing Email" })
         }
         else if(password == undefined || password === ""){
             return res.status(401).send({ error: "Missing Password" })
         }
-        else if(password.length() <6){
-            return res.status(399).send({ error: "Short Password" })
-        }
         else if(username.length() <4){
             return res.status(398).send({ error: "Short Username" })
         }
-        var query = {username: username}
-        var users = await usermodel.find(query)
-        if(users.length>0){
-            return res.status(397).send({ error: "Username Taken" })
+        else if(password.length() <6){
+            return res.status(399).send({ error: "Short Password" })
         }
         var query = {email: email}
         var emails = await usermodel.find(query)
         if(emails.length>0){
             return res.status(396).send({ error: "Email Taken" })
+        }
+        var query = {username: username}
+        var users = await usermodel.find(query)
+        if(users.length>0){
+            return res.status(397).send({ error: "Username Taken" })
         }
         return res.json("Valid User")
     }
