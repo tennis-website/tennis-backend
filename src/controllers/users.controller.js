@@ -41,11 +41,19 @@ async function authenticateUsername(req,res){
 async function authenticatePassword(req,res){
     const {username, password} = req.body;
     try{
-        var query = {username: username, password: password}
-        console.log(username)
-        var user = await usermodel.findOne(query)
-        if(user != undefined){
-            return res.json(user._id)
+        if(username.indexOf("@") == -1){
+            var query = {username: username, password: password}
+            var user = await usermodel.findOne(query)
+            if(user != undefined){
+                return res.json(user._id)
+            }
+        }
+        else{
+            var query = {email: username, password: password}
+            var user = await usermodel.findOne(query)
+            if(user != undefined){
+                return res.json(user._id)
+            }
         }
         return res.status(400).send({ error: "Incorrect Password" })
     }
