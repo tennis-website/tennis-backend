@@ -21,15 +21,36 @@ async function makeUser(req, res){
     }
 }
 
-async function authenticateUsername(req,res){
-    const {username} = req.query;
+async function authenticateUser(req,res){
+    const {username, email, password} = req.body;
     try{
+        if(email == undefined || email === ""){
+            return res.status(403).send({ error: "Missing Email" })
+        }
+        else if(username == undefined || username === ""){
+            return res.status(402).send({ error: "Missing Username" })
+
+        }
+        else if(password == undefined || password === ""){
+            return res.status(401).send({ error: "Missing Password" })
+        }
+        else if(password.length() <6){
+            return res.status(399).send({ error: "Short Password" })
+        }
+        else if(username.length() <4){
+            return res.status(398).send({ error: "Short Username" })
+        }
         var query = {username: username}
         var users = await usermodel.find(query)
         if(users.length>0){
-            return res.json("Username Taken") 
+            return res.status(398).send({ error: "Username Taken" })
         }
-        return res.json("Valid Username")
+        var query = {email: email}
+        var emails = await usermodel.find(query)
+        if(emails.length>0){
+            return res.status(397).send({ error: "Email Taken" })
+        }
+        return res.json("Valid User")
     }
     catch(err){
         console.log(err)
@@ -41,11 +62,11 @@ async function authenticateUsername(req,res){
 async function authenticatePassword(req,res){
     const {username, password} = req.body;
     try{
-        if(username == undefined || username == ""){
+        if(username == undefined || username === ""){
             return res.status(402).send({ error: "Missing Username" })
 
         }
-        else if(password == undefined || password == ""){
+        else if(password == undefined || password === ""){
             return res.status(401).send({ error: "Missing Password" })
         }
         else if(username.indexOf("@") == -1){
@@ -110,6 +131,6 @@ module.exports = {
     patchUser,
     makeUser,
     getUser,
-    authenticateUsername,
+    authenticateUser,
     authenticatePassword
 }
