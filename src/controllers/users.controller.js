@@ -12,6 +12,7 @@ async function makeUser(req, res){
             password: String(password), 
             username: String(username),
             emailList: Boolean(emailList),
+            admin: false
         })
         return res.json(myId)
     }

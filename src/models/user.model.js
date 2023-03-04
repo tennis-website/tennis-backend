@@ -16,6 +16,10 @@ const userSchema = new mongoose.Schema({
     emailList:{
         type: Boolean,
         required: false
+    },
+    admin:{
+        type: Boolean,
+        required: false
     }
 }, {
     versionKey: false
