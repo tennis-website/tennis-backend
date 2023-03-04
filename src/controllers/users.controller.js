@@ -37,18 +37,24 @@ async function authenticateUser(req,res){
         else if(username.length <4){
             return res.status(398).send({ error: "Short Username" })
         }
+        else if(username.length <4){
+            return res.status(398).send({ error: "Short Username" })
+        }
+        else if(email.indexOf("@") == -1){
+            return res.status(395).send({ error: "Inavlid Email" })
+        }
         else if(password.length <6){
             return res.status(399).send({ error: "Short Password" })
-        }
-        var query = {email: email}
-        var emails = await usermodel.find(query)
-        if(emails.length>0){
-            return res.status(396).send({ error: "Email Taken" })
         }
         var query = {username: username}
         var users = await usermodel.find(query)
         if(users.length>0){
             return res.status(397).send({ error: "Username Taken" })
+        }
+        var query = {email: email}
+        var emails = await usermodel.find(query)
+        if(emails.length>0){
+            return res.status(396).send({ error: "Email Taken" })
         }
         return res.json("Valid User")
     }
