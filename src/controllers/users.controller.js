@@ -41,11 +41,11 @@ async function authenticateUsername(req,res){
 async function authenticatePassword(req,res){
     const {username, password} = req.body;
     try{
-        if(username == undefined){
+        if(username == undefined || username == ""){
             return res.status(402).send({ error: "Missing Username" })
 
         }
-        else if(password == undefined){
+        else if(password == undefined || password == ""){
             return res.status(401).send({ error: "Missing Password" })
         }
         else if(username.indexOf("@") == -1){
