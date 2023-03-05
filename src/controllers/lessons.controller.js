@@ -134,19 +134,52 @@ async function patchLesson(req, res){
 async function getAllLessons(req, res){
     try{
         let lessons = await lessonmodel.find({})
-        let final = []
-        for(let i = 0; i<lessons.length; i++){
-            if(lessons[i].date >= Date.now()){
-                final.push(lessons[i]);
+        console.log(lessons.length)
+        var ending = []
+        now =  (String(Date(Date.now())).split(" "))
+        now[1] = months[now[1]]
+        for(let i = 0; i<lessons.length; i++){  
+            lessontime=String(lessons[i].date).split(" ")
+            lessontime[1] = months[lessontime[1]]
+            if(parseInt(lessontime[3]) > parseInt(now[3])){
+                ending.push(lessons[i])
+                continue;
             }
+            if(parseInt(lessontime[3]) == parseInt(now[3])){
+                if(parseInt(lessontime[1]) > parseInt(now[1])){
+                    ending.push(lessons[i])
+                    continue;
+                }
+                if(parseInt(lessontime[1]) == parseInt(now[1])){
+                    console.log("month")
+                    if(parseInt(lessontime[2]+1) >= parseInt(now[2])){
+                        ending.push(lessons[i])
+                        continue
+                    }
+                }
+            } 
         }
-        return res.json(final);
+        return res.json(ending);
     }
     catch(err){
         console.log(err)
         res.status(422).send({ error: err.message })
     }
 }
+const months = {
+    'Jan': 1,
+    'Feb': 2,
+    'Mar': 3,
+    'Apr': 4,
+    'May': 5,
+    'Jun': 6,
+    'Jul': 7,
+    'Aug': 8,
+    'Sep': 9,
+    'Oct': 10,
+    'Nov': 11,
+    'Dec': 12,
+  };
 
 module.exports = {
     makeLesson,
