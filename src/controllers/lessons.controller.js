@@ -133,33 +133,11 @@ async function patchLesson(req, res){
 }
 async function getAllLessons(req, res){
     try{
-        let lessons = await lessonmodel.find({})
-        console.log(lessons.length)
-        var ending = []
-        now =  (String(Date(Date.now())).split(" "))
-        now[1] = months[now[1]]
-        for(let i = 0; i<lessons.length; i++){  
-            lessontime=String(lessons[i].date).split(" ")
-            lessontime[1] = months[lessontime[1]]
-            if(parseInt(lessontime[3]) > parseInt(now[3])){
-                ending.push(lessons[i])
-                continue;
-            }
-            if(parseInt(lessontime[3]) == parseInt(now[3])){
-                if(parseInt(lessontime[1]) > parseInt(now[1])){
-                    ending.push(lessons[i])
-                    continue;
-                }
-                if(parseInt(lessontime[1]) == parseInt(now[1])){
-                    console.log("month")
-                    if(parseInt(lessontime[2]+1) >= parseInt(now[2])){
-                        ending.push(lessons[i])
-                        continue
-                    }
-                }
-            } 
-        }
-        return res.json(ending);
+    const today = new Date();
+    today.setUTCHours(0, 0, 0, 0);
+    const ending = await lessonmodel.find({date: {$gte: today}});
+    console.log(ending)
+    return res.json(ending);
     }
     catch(err){
         console.log(err)
