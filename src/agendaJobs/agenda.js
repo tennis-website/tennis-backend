@@ -7,12 +7,11 @@ const Agenda = require('agenda');
 const agenda = new Agenda({
     db: { 
         address: uri, 
-        //while testing change collection to agenda
         collection: 'agendaJobs', 
         options: { useUnifiedTopology: true }, 
         },
         processEvery: "10 seconds",
-        maxConcurrency: 30,
+        maxConcurrency: 100,
     });
 
 
@@ -20,8 +19,7 @@ agenda
  .on('ready', () => {
     agenda.start();
     console.log("Agenda started!")
-    //agenda.every("9 * * * * *", "sendAnnouncement")
-    agenda.every("0 0 12 * * 0", "sendAnnouncement")
+    agenda.every("0 0 6 * * 0", "scheduleAnnouncements")
 
 })
 .on('error', () => console.log("Agenda connection error!"));

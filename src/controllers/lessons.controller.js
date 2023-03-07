@@ -7,8 +7,28 @@ async function makeLesson(req, res){
         var myId = mongoose.Types.ObjectId()
         if(typeof(date) == "number"){
             date = new Date(date * 1000)
-            console.log(date)
         }
+        if(typeof(date) == "string"){
+            date = new Date(date)
+        }
+        
+        const startOfDay = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+        const endOfDay = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
+
+        // find documents where the 'date' field falls within the target day
+        
+        const matchingDocuments = await lessonmodel.find({
+        date: {
+            $gte: startOfDay,
+            $lt: endOfDay,
+        },
+        });
+
+        if(matchingDocuments.length >0){
+            res.status(402).send({ error: "A lesson is already on that Date" })
+            return
+        }
+        
         await lessonmodel.create({ 
             _id: myId,
             maxStudents: maxStudents,
@@ -19,7 +39,8 @@ async function makeLesson(req, res){
             address: address,
             coordinates: coordinates,
             time: time,
-            location: String(location)
+            location: String(location),
+            reminded: false
         })
         return res.json(myId)
     }
@@ -133,31 +154,18 @@ async function patchLesson(req, res){
 }
 async function getAllLessons(req, res){
     try{
-    const today = new Date();
-    today.setUTCHours(0, 0, 0, 0);
-    const ending = await lessonmodel.find({date: {$gte: today}});
-    console.log(ending)
-    return res.json(ending);
+        const now = new Date();
+        const utcDate = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0, 0));
+        console.log(utcDate)
+        const ending = await lessonmodel.find({ date: { $gte: utcDate } }).sort({ date: 1 });
+        console.log(ending)
+        return res.json(ending);
     }
     catch(err){
         console.log(err)
         res.status(422).send({ error: err.message })
     }
 }
-const months = {
-    'Jan': 1,
-    'Feb': 2,
-    'Mar': 3,
-    'Apr': 4,
-    'May': 5,
-    'Jun': 6,
-    'Jul': 7,
-    'Aug': 8,
-    'Sep': 9,
-    'Oct': 10,
-    'Nov': 11,
-    'Dec': 12,
-  };
 
 module.exports = {
     makeLesson,

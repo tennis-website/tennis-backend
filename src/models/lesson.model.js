@@ -22,10 +22,9 @@ const lessonSchema = new mongoose.Schema({
         type: String,
         required: false
     },
-    coordinates:{
-        type: String,
-        required: false
-    },
+    coordinates:[
+        {type: Number}
+    ],
     maxStudents:{
         type: Number,
         required: false
@@ -33,6 +32,10 @@ const lessonSchema = new mongoose.Schema({
     location: {
         type: String,
         required: false
+    },
+    reminded: {
+        type: Boolean,
+        required: false,
     }
 }, {
     versionKey: false
