@@ -10,4 +10,4 @@ async function getReminderBody(lesson){
         return "ERROR"
     }
 }
-module.exports = getReminderBody
+module.exports = {getReminderBody}

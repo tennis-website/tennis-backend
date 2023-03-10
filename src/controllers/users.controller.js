@@ -133,7 +133,21 @@ async function patchUser(req, res){
         res.status(422).send({ error: err.message })
     }
 }
+async function deleteUser(req, res){
+    const {_id} = req.query
+    try{
+        usermodel.deleteOne({_id: _id}).then(function(){
+            return res.json("Data deleted"); // Success
+        })
+    }
+    catch(err){
+        console.log(err)
+        res.status(422).send({ error: err.message })
+    }
+}
+
 module.exports = {
+    deleteUser,
     patchUser,
     makeUser,
     getUser,

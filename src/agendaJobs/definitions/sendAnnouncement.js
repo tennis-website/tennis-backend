@@ -11,15 +11,15 @@ const sendAnnouncementDefinition = (agenda) => {
         for(let i = 0; i<dates.length;i++){
             agenda.schedule(dates[i], "sendAnnouncement")
         }
-        console.log("announcements schduled")
+        console.log("announcements scheduled")
     })
     agenda.define("sendAnnouncement",  { shouldSaveResult: true, concurrency: 100, priority: 10 }, async(job, done)=>{
-        let lesson = await Lesson.getLesson()
-        if(lessons == "Error"){ 
+        let lesson = await Lesson.getTodayLesson()
+        if(lesson == "Error"){ 
             console.log("ERRORR LESSSON ISSUE ")
             done()
         } 
-        let emails = await EmailList.getEmailList(lesson)
+        let emails = await EmailList.getReminderEmailList(lesson)
         if(emails == "Error"){ 
             console.log("ERRORR EMAIL ISSUE ")
             done()

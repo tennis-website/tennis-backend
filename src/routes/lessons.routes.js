@@ -8,6 +8,7 @@ const{
     getLessonsbyStudentName,
     patchLessonAddStudent,
     patchLesson,
+    deletelessons,
     getAllLessons
 }= require("../controllers/lessons.controller")
 
@@ -18,6 +19,7 @@ lessonRouter.get('/api/lessonsByStudentID', getLessonsbyStudentID);
 lessonRouter.get('/api/lessonsByStudentName', getLessonsbyStudentName);
 lessonRouter.patch('/api/lessonAddStudent', patchLessonAddStudent)
 lessonRouter.get('/api/allLessons', getAllLessons)
+lessonRouter.delete('/api/lesson', deletelessons);
 
 
 module.exports = lessonRouter;

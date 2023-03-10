@@ -33,4 +33,4 @@ async function sendMail(emaillist, subject, htmltext) {
     }
   }
   
-module.exports =  sendMail
+module.exports =  {sendMail}

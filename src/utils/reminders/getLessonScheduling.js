@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-mongoose.connect("mongodb+srv://Jai_Garg:H3wHp60utQZeZNpN@tennisinitiativecluster.t5zacqa.mongodb.net/?retryWrites=true&w=majority", {dbName: 'TennisInitiativeDB'} );
-require("../../models/lesson.model")
 const lessonmodel = mongoose.model('lesson');
 
 async function getLessonScheduling(){
@@ -9,9 +7,7 @@ async function getLessonScheduling(){
         const now = new Date();
         const utcDate = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0, 0));
         utcDate.setUTCDate(utcDate.getUTCDate() - 1);
-        const previousUtcDate = utcDate.toISOString();
-        const lessons = await lessonmodel.find({ reminded: false, date: { $gt: previousUtcDate } });
-        console.log(lessons)    
+        const lessons = await lessonmodel.find({ reminded: false, date: { $gt: utcDate } });
         for(let i =0; i < lessons.length;i++){
             let timedate = new Date(lessons[i].date)
             timedate.setUTCHours(12, 0, 0, 0)
@@ -30,9 +26,4 @@ async function getLessonScheduling(){
         return "ERROR"
     }
 }
-async function getOutput(){
-    console.log("testings")
-    console.log(await getLessonScheduling())
-}
-getOutput()
-module.exports = getLessonScheduling
+module.exports = {getLessonScheduling}

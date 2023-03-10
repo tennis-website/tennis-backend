@@ -35,4 +35,4 @@ async function getReminderSubject(lesson){
         return "ERROR"
     }
 }
-module.exports = getReminderSubject
+module.exports = {getReminderSubject}

@@ -2,6 +2,7 @@ require('dotenv').config();
 
 
 require('./models/test.model');
+require("./models/request.model")
 require('./models/user.model');
 require('./models/lesson.model')
 const app = require('./app');

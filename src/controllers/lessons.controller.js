@@ -155,10 +155,9 @@ async function patchLesson(req, res){
 async function getAllLessons(req, res){
     try{
         const now = new Date();
-        const utcDate = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0, 0));
-        console.log(utcDate)
+        const offset = now.getTimezoneOffset() * 60000; // Convert to milliseconds
+        const utcDate = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0) - offset);
         const ending = await lessonmodel.find({ date: { $gte: utcDate } }).sort({ date: 1 });
-        console.log(ending)
         return res.json(ending);
     }
     catch(err){
@@ -167,7 +166,21 @@ async function getAllLessons(req, res){
     }
 }
 
+async function deletelessons(req, res){
+    const {_id} = req.query
+    try{
+        lessonmodel.deleteOne({_id: _id}).then(function(){
+            return res.json("Data deleted"); // Success
+        })
+    }
+    catch(err){
+        console.log(err)
+        res.status(422).send({ error: err.message })
+    }
+}
+
 module.exports = {
+    deletelessons,
     makeLesson,
     getLessonbyID,
     getLessonsbyStudentID,
