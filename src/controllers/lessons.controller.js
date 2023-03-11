@@ -67,7 +67,7 @@ async function getLessonsbyStudentID(req, res){
     const {studentID} = req.query;
     try{
         var query = {students: studentID}
-        lessons = await lessonmodel.find(query)
+        lessons = await lessonmodel.find(query).sort({ date: 1 })
         return res.json(lessons)
     }
     catch(err){
@@ -75,11 +75,47 @@ async function getLessonsbyStudentID(req, res){
         res.status(422).send({ error: err.message })
     }
 }
-async function getLessonsbyStudentName(req, res){
+async function getPastLessonsbyStudentID(req, res){
+    const {studentID} = req.query;
+    try{
+        var query = {students: studentID, date: { $lt: new Date() } }
+        lessons = await lessonmodel.find(query).sort({ date: 1 })
+        return res.json(lessons)
+    }
+    catch(err){
+        console.log(err)
+        res.status(422).send({ error: err.message })
+    }
+}
+async function getFutureLessonsbyStudentID(req, res){
+    const {studentID} = req.query;
+    try{
+        var query = {students: studentID,  date: { $gte: new Date() }}
+        lessons = await lessonmodel.find(query).sort({ date: 1 })
+        return res.json(lessons)
+    }
+    catch(err){
+        console.log(err)
+        res.status(422).send({ error: err.message })
+    }
+}
+async function getPastLessonsbyStudentName(req, res){
     const {studentName} = req.query;
     try{
-        var query = {studentsNames: studentName}
-        lessons = await lessonmodel.find(query)
+        var query = {studentsNames: studentName, date: { $lt: new Date() } }
+        lessons = await lessonmodel.find(query).sort({ date: 1 })
+        return res.json(lessons)
+    }
+    catch(err){
+        console.log(err)
+        res.status(422).send({ error: err.message })
+    }
+}
+async function getFutureLessonsbyStudentName(req, res){
+    const {studentName} = req.query;
+    try{
+        var query = {studentsNames: studentName, date: { $gte: new Date() } }
+        lessons = await lessonmodel.find(query).sort({ date: 1 })
         return res.json(lessons)
     }
     catch(err){
@@ -184,7 +220,10 @@ module.exports = {
     makeLesson,
     getLessonbyID,
     getLessonsbyStudentID,
-    getLessonsbyStudentName,
+    getPastLessonsbyStudentName,
+    getFutureLessonsbyStudentName,
+    getPastLessonsbyStudentID,
+    getFutureLessonsbyStudentID,
     patchLessonAddStudent,
     patchLesson,
     getAllLessons
