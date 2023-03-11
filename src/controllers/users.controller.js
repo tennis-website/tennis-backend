@@ -169,9 +169,9 @@ async function deleteUser(req, res){
                 }
                 await lessons[i].save();
         }
-        //usermodel.deleteOne({_id: _id}).then(function(){
+        usermodel.deleteOne({_id: _id}).then(function(){
             return res.json("Data deleted"); // Success
-        //})
+        })
     }
     catch(err){
         console.log(err)
