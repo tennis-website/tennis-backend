@@ -117,21 +117,26 @@ async function patchUser(req, res){
             if(req.body.email.indexOf("@") == -1){
                 return res.status(398).send({ error: "Invalid Email" })
             }
-            let check = await usermodel({email: req.body.email, _id: {$ne: _id}})
+            let check = await usermodel.find({email: req.body.email, _id: {$ne: _id}})
             if(check.length == 0){
                 user.email = req.body.email
             }
-            return res.status(397).send({ error: "email Taken" })
+            else{
+                return res.status(397).send({ error: "Email Taken" })
+            }
         }
         if(req.body.username != undefined){
             if(req.body.username.length < 4){
                 return res.status(399).send({ error: "Username must be 4 characters" })
             }
-            let check = await usermodel({username: req.body.username, _id: {$ne: _id}})
+            let check = await usermodel.find({username: req.body.username, _id: {$ne: _id}})
+            console.log(check)
             if(check.length == 0){
                 user.username = req.body.username
             }
-            return res.status(396).send({ error: "Username Taken" })
+            else{
+                return res.status(396).send({ error: "Username Taken" })
+            }
         }
         if(req.body.emailList != undefined){
             user.emailList = req.body.emailList
