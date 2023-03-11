@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const usermodel = mongoose.model('user');
+const lessonmodel = mongoose.model('lesson');
 
 async function makeUser(req, res){
     const { email,password,username,emailList } = req.body;
@@ -159,18 +160,18 @@ async function deleteUser(req, res){
     const {_id} = req.query
     try{
         const now = new Date();
-        const offset = now.getTimezoneOffset() * 60000; // Convert to milliseconds
-        const utcDate = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0) - offset);
-        const lessons = await lessonmodel.find({ date: { $gte: utcDate }, students: studentID })
-        for(let j = 0; j < lessons.length; i++){
+        const lessons = await lessonmodel.find({ date: { $gte: new Date() }, students: _id })
+        for(let i = 0; i < lessons.length; i++){
             if(lessons[i].students.indexOf(_id) != -1)
-                lessons[i].students.splice(lessons[i].student.indexOf(_id),1)
-                lessons[i].studentsNames.splice(lessons[i].student.indexOf(_id),1)
+                lessons[i].students.splice(lessons[i].students.indexOf(_id),1)
+                if(lessons[i].students.indexOf(_id) < lessons[i].studentsNames.length){
+                    lessons[i].studentsNames.splice(lessons[i].students.indexOf(_id),1)
+                }
                 await lessons[i].save();
         }
-        usermodel.deleteOne({_id: _id}).then(function(){
+        //usermodel.deleteOne({_id: _id}).then(function(){
             return res.json("Data deleted"); // Success
-        })
+        //})
     }
     catch(err){
         console.log(err)
