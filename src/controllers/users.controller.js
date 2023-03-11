@@ -79,7 +79,7 @@ async function authenticatePassword(req,res){
             var query = {username: username, password: password}
             var user = await usermodel.findOne(query)
             if(user != undefined){
-                return res.json(user._id)
+                return res.json(user)
             }
         }
         else{
@@ -114,15 +114,32 @@ async function patchUser(req, res){
         var query = {_id: _id}
         user = await usermodel.findOne(query)
         if(req.body.email != undefined){
-            user.email = req.body.email
+            if(req.body.email.indexOf("@") == -1){
+                return res.status(398).send({ error: "Invalid Email" })
+            }
+            let check = await usermodel({email: req.body.email, _id: {$ne: _id}})
+            if(check.length == 0){
+                user.email = req.body.email
+            }
+            return res.status(397).send({ error: "email Taken" })
         }
         if(req.body.username != undefined){
-            user.username = req.body.username
+            if(req.body.username.length < 4){
+                return res.status(399).send({ error: "Username must be 4 characters" })
+            }
+            let check = await usermodel({username: req.body.username, _id: {$ne: _id}})
+            if(check.length == 0){
+                user.username = req.body.username
+            }
+            return res.status(396).send({ error: "Username Taken" })
         }
         if(req.body.emailList != undefined){
             user.emailList = req.body.emailList
         }
         if(req.body.password != undefined){
+            if(req.body.password.length <6){
+                return res.status(400).send({ error: "Short Password" })
+            }
             user.password = req.body.password
         }
         await user.save();
@@ -136,6 +153,16 @@ async function patchUser(req, res){
 async function deleteUser(req, res){
     const {_id} = req.query
     try{
+        const now = new Date();
+        const offset = now.getTimezoneOffset() * 60000; // Convert to milliseconds
+        const utcDate = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0) - offset);
+        const lessons = await lessonmodel.find({ date: { $gte: utcDate }, students: studentID })
+        for(let j = 0; j < lessons.length; i++){
+            if(lessons[i].students.indexOf(_id) != -1)
+                lessons[i].students.splice(lessons[i].student.indexOf(_id),1)
+                lessons[i].studentsNames.splice(lessons[i].student.indexOf(_id),1)
+                await lessons[i].save();
+        }
         usermodel.deleteOne({_id: _id}).then(function(){
             return res.json("Data deleted"); // Success
         })
