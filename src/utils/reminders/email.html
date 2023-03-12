@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Online HTML Editor</title>
+	<style>
+		.Title{
+			text-align: center;
+			font-weight: bold;
+			font-size: 350%;
+		}
+		@font-face {
+			font-family: 'Raleway';
+			src: url('raleway.woff2') format('woff2'), 
+			     url('raleway.woff') format('woff'); 
+		}
+		body {
+			font-family: Raleway, sans-serif;
+		}
+		.TopDate{
+		    text-align: center;
+			font-weight: bold;
+			font-size: 275%;
+            color: #233831;
+            margin-bottom: -1%;
+		}
+        .Time{
+            margin-top: -1%;
+            color: #233831;
+            text-align: center;
+			font-weight: bold;
+			font-size: 275%;  
+        }
+		.hr-style {
+		    width: 85%;
+			border: 0;
+			height: 2px;
+			background: black;
+			background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+		}
+		.background{
+		    border-radius: 20px;
+		    margin-left:20%;
+		    margin-right:20%;
+		    width: 60%;
+		    background-color: #F1F1F1;
+		    text-align: center;
+		    font-size: 175%;
+		    padding-top: 5%;
+		    padding-bottom: 5%;
+		}
+		.InTitle{
+            font-size: 80%;
+            margin-bottom: 0%;
+		}
+		.instructors{
+		    display: flex;
+            flex-direction: row; 
+        }
+	</style>
+</head>
+<body>
+	<h1 class="Title">LESSON REMINDER</h1>
+	<h2 class ="TopDate">Monday, April 2, 2023</h2>
+	<hr class="hr-style">
+	<h2 class ="Time">10:00 AM - 11:00 AM</h2>
+	<div class = "background">
+	    <h4 class = "InTitle">INSTRUCTORS:</h4>
+	    <div class = "instructors">
+	        <p>Jai Garg</p>    
+	        <p> Ethan Kang</p>
+	   </div>
+	</div>
+
+</body>
+</html>
