@@ -25,11 +25,16 @@
     "dotenv": "^16.0.3",
     "expo": "^1.0.0",
     "express": "^4.18.2",
+    "fs": "^0.0.1-security",
+    "https": "^1.0.0",
     "indexof": "^0.0.1",
     "mongodb": "^4.13.0",
     "mongoose": "^6.8.2",
     "node-geocoder": "^4.2.0",
-    "nodemailer": "^6.9.1"
+    "nodemailer": "^6.9.1",
+    "path": "^0.12.7",
+    "querystring": "^0.2.1",
+    "url": "^0.11.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"
