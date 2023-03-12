@@ -1,15 +1,26 @@
 const mongoose = require('mongoose');
 const lessonmodel = mongoose.model('lesson');
+const convertTime = require('convert-time');
+const NodeGeocoder = require('node-geocoder');
+
+const options = {
+    provider: 'google',
+    apiKey: 'AIzaSyB3V2yTv11sv-RvJwjAGeu2x6LKEavAsTA',
+  };
+
+const geocoder = NodeGeocoder(options);
 
 async function makeLesson(req, res){
-    var { date,instructors,time, students,studentsNames, location,address, coordinates, maxStudents} = req.body;
+    var { date,instructors,time, location,address, maxStudents} = req.body;
     try{
-        var myId = mongoose.Types.ObjectId()
         if(typeof(date) == "number"){
             date = new Date(date * 1000)
         }
         if(typeof(date) == "string"){
             date = new Date(date)
+        }
+        if(date == null){
+            return res.status(401).send({ error: "Please Enter a Date" })
         }
         
         const startOfDay = new Date(date.getFullYear(), date.getMonth(), date.getDate());
@@ -29,13 +40,58 @@ async function makeLesson(req, res){
             return
         }
         
+        try{
+            time = convertTime(String(time), "hh:MM A")
+        }
+        catch(err){
+            return res.status(403).send({ error: "Invalid Time" })
+        }
+
+        if(maxStudents < 1){
+            return res.status(404).send({ error: "Max Students must be positive" })
+        }
+        if(maxStudents == null){
+            return res.status(405).send({ error: "Please Enter Max Students" })
+        }
+        if(instructors == null || instructors.length ==0){
+            return res.status(406).send({ error: "Please Enter Instructors" })
+        }
+        if(address == null){
+            return res.status(407).send({ error: "Please Enter Address" })
+        }
+        if(time == null){
+            return res.status(408).send({ error: "Please Enter Time" })
+        }
+        if(location == null){
+            return res.status(409).send({ error: "Please Enter Location" })
+        }
+        let coordinates =[]
+        await geocoder.geocode(String(address)).then((res) => {
+            if(res.length === 0) {
+                return res.status(410).send({ error: "Invalid Address" })
+            } 
+            else {
+                coordinates = [res[0].latitude, res[0].longitude]
+                address = res[0].formattedAddress.substring(0, res[0].formattedAddress.lastIndexOf(","))
+            }
+        })
+        .catch((err) => {
+            return res.status(411).send({ error: "Try Changing Address" })
+        });
+        if(coordinates.length !=2){
+            return res.status(412).send({ error: "Coordinate Error" })
+        }
+
+
+
+        var myId = mongoose.Types.ObjectId()
         await lessonmodel.create({ 
             _id: myId,
             maxStudents: maxStudents,
             date: date, 
             instructors: instructors, 
-            students: students,
-            studentsNames: studentsNames,
+            students: [],
+            studentsNames: [],
             address: address,
             coordinates: coordinates,
             time: time,

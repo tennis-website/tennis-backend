@@ -20,6 +20,7 @@
   "homepage": "https://github.com/JaiGarg314/HackathonBackend#readme",
   "dependencies": {
     "agenda": "^5.0.0",
+    "convert-time": "^0.3.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "expo": "^1.0.0",
@@ -27,6 +28,7 @@
     "indexof": "^0.0.1",
     "mongodb": "^4.13.0",
     "mongoose": "^6.8.2",
+    "node-geocoder": "^4.2.0",
     "nodemailer": "^6.9.1"
   },
   "devDependencies": {

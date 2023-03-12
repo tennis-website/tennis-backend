@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
 const requestmodel = mongoose.model('request');
+const lessonmodel = mongoose.model('lesson');
 
 async function makeRequest(req, res){
-    var { date, users, messages} = req.body;
+    var { date, user, message} = req.body;
     try{
         var myId = mongoose.Types.ObjectId()
         if(typeof(date) == "number"){
@@ -23,18 +24,40 @@ async function makeRequest(req, res){
             $lt: endOfDay,
         },
         });
-
-        if(matchingDocuments.length >0){
-            res.status(402).send({ error: "A request is already on that Date" })
-            return
+        const lessons = await lessonmodel.find({
+            date: {
+                $gte: startOfDay,
+                $lt: endOfDay,
+            },
+            });
+        if(lessons.length >0){
+            return res.status(410).send({error: "Lesson already exists on specified Date"})
         }
-        
-        await requestmodel.create({ 
-            _id: myId,
-            date: date, 
-            users: users,
-            messages: messages
-        })
+        if(matchingDocuments.length >0){
+            if(user != null){
+                matchingDocuments[0].users.push(user)
+            }
+            if(message != null){
+                matchingDocuments[0].messages.push(message)
+            }
+            matchingDocuments[0].save()
+            return res.json(matchingDocuments[0])
+        }
+        if(message == null){
+            await requestmodel.create({ 
+                _id: myId,
+                date: date, 
+                users: [user],
+            })
+        }
+        else{
+            await requestmodel.create({ 
+                _id: myId,
+                date: date, 
+                users: [user],
+                messages: [message]
+            })
+        }
         return res.json(myId)
     }
     catch(err){

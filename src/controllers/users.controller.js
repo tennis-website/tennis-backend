@@ -6,7 +6,6 @@ async function makeUser(req, res){
     const { email,password,username,emailList } = req.body;
     try{
         var myId = mongoose.Types.ObjectId()
-
         await usermodel.create({ 
             _id: myId,
             email: String(email), 
@@ -38,14 +37,17 @@ async function authenticateUser(req,res){
         else if(username.length <4){
             return res.status(398).send({ error: "Short Username" })
         }
-        else if(username.length <4){
-            return res.status(398).send({ error: "Short Username" })
+        else if(username.indexOf(" ") != -1){
+            return res.status(390).send({ error: "Username Can Not Contain Spaces" })
         }
-        else if(email.indexOf("@") == -1){
-            return res.status(395).send({ error: "Inavlid Email" })
+        else if(email.indexOf("@") == -1 || email.indexOf(" ") != -1){
+            return res.status(395).send({ error: "Invalid Email" })
         }
         else if(password.length <6){
             return res.status(399).send({ error: "Short Password" })
+        }
+        else if(password.indexOf(" ") != -1){
+            return res.status(388).send({ error: "Password Can Not Contain Spaces" })
         }
         var query = {username: username}
         var users = await usermodel.find(query)
@@ -115,7 +117,7 @@ async function patchUser(req, res){
         var query = {_id: _id}
         user = await usermodel.findOne(query)
         if(req.body.email != undefined){
-            if(req.body.email.indexOf("@") == -1){
+            if(req.body.email.indexOf("@") == -1 || req.body.email.indexOf(" ") != -1){
                 return res.status(398).send({ error: "Invalid Email" })
             }
             let check = await usermodel.find({email: req.body.email, _id: {$ne: _id}})
@@ -129,6 +131,9 @@ async function patchUser(req, res){
         if(req.body.username != undefined){
             if(req.body.username.length < 4){
                 return res.status(399).send({ error: "Username must be 4 characters" })
+            }
+            if(req.body.username.indexOf(" ") != -1){
+                return res.status(390).send({ error: "Username cannot contain spaces" })
             }
             let check = await usermodel.find({username: req.body.username, _id: {$ne: _id}})
             console.log(check)
@@ -145,6 +150,9 @@ async function patchUser(req, res){
         if(req.body.password != undefined){
             if(req.body.password.length <6){
                 return res.status(400).send({ error: "Short Password" })
+            }
+            if(req.body.password.indexOf(" ") != -1){
+                return res.status(395).send({ error: "password cannot contain spaces" })
             }
             user.password = req.body.password
         }
