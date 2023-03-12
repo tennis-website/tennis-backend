@@ -48,7 +48,7 @@ async function makeLesson(req, res){
         }
 
         if(maxStudents < 1){
-            return res.status(404).send({ error: "Max Students must be positive" })
+            return res.status(399).send({ error: "Max Students must be positive" })
         }
         if(maxStudents == null){
             return res.status(405).send({ error: "Please Enter Max Students" })

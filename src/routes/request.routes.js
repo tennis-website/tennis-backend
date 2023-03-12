@@ -7,6 +7,7 @@ const{
     patchRequest,
     removeUser,
     getAllRequests,
+    getRequestbyDate,
     addMessage,
     getRequestbyID,
     addUser
@@ -16,6 +17,7 @@ requestRouter.delete('/api/request', deleteRequest);
 requestRouter.post('/api/request', makeRequest);
 requestRouter.patch('/api/request', patchRequest)
 requestRouter.get('/api/requestByID', getRequestbyID);
+requestRouter.get('/api/requestByDate', getRequestbyDate);
 requestRouter.get('/api/getAllRequests', getAllRequests);
 requestRouter.patch('/api/requestAddMessage', addMessage);
 requestRouter.patch('/api/requestAddUser', addUser)

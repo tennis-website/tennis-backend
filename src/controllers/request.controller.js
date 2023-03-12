@@ -24,15 +24,7 @@ async function makeRequest(req, res){
             $lt: endOfDay,
         },
         });
-        const lessons = await lessonmodel.find({
-            date: {
-                $gte: startOfDay,
-                $lt: endOfDay,
-            },
-            });
-        if(lessons.length >0){
-            return res.status(410).send({error: "Lesson already exists on specified Date"})
-        }
+
         if(matchingDocuments.length >0){
             if(user != null){
                 matchingDocuments[0].users.push(user)
@@ -76,6 +68,25 @@ async function getRequestbyID(req, res){
     try{
         var query = {_id: _id}
         let request = await requestmodel.findOne(query)
+        return res.json(request)
+    }
+    catch(err){
+        console.log(err)
+        res.status(422).send({ error: err.message })
+    }
+}
+
+async function getRequestbyDate(req, res){
+    var {date} = req.query;
+    try{
+        date = new Date(date)
+        date.setHours(0, 0, 0, 0); // set time to midnight for comparison
+        let query = { date: { $gte: date, $lt: new Date(date.getTime() + 24 * 60 * 60 * 1000) } };
+        console.log(query)
+        let request = await requestmodel.findOne(query);  
+        if(request == null){
+            return res.json("No Request")
+        }      
         return res.json(request)
     }
     catch(err){
@@ -187,6 +198,7 @@ module.exports = {
     makeRequest,
     removeUser,
     patchRequest,
+    getRequestbyDate,
     getAllRequests,
     addMessage,
     addUser
