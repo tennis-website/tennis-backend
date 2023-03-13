@@ -1,7 +1,42 @@
-const mongoose = require('mongoose');
-const lessonmodel = mongoose.model('lesson');
+
+
 const reminderEmail = require("./reminderEmail")
 const googleURl = require("./getGoogleMapsUrl")
+
+
+
+
+
+async function getReminderBody(lesson){
+    try{
+        let info = lesson.date.toUTCString().split(" ")
+        let date = abbrevDayToFull[info[0].replace(",", "")]+", "+ abbrevMonthToFull[info[2]]+" "+String(parseInt(info[1]))+", "+info[3]
+
+        let instructors = Object.values(lesson.instructors)
+
+        let googleMapsUrl = await googleURl.getGoogleMapsURl(lesson.address)
+
+        const endtime = new Date(`March 12, 2023 ${lesson.time}`);
+        endtime.setHours(endtime.getHours() + 1);
+        const updatedTimeStr = endtime.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+
+        let time = lesson.time + " - "+ updatedTimeStr
+
+        let streetAddress = lesson.address.substring(0, lesson.address.indexOf(","))
+        let cityStateZipaddress = lesson.address.substring(lesson.address.indexOf(",")+2, lesson.address.length)
+        console.log(date)
+        console.log(instructors)
+        console.log(googleMapsUrl)
+        console.log(time)
+        console.log(streetAddress)
+        console.log(cityStateZipaddress)
+        return reminderEmail.generateEmailBodyHTML(date,time,instructors,lesson.location,googleMapsUrl,streetAddress,cityStateZipaddress)
+    }
+    catch(err){
+        console.log("ERROR Body"+ err.message)
+        return "ERROR"
+    }
+}
 
 const abbrevDayToFull = {
     'Sun': 'Sunday',
@@ -27,28 +62,4 @@ const abbrevMonthToFull = {
 'Dec': 'December'
 };
 
-async function getReminderBody(lesson){
-    try{
-        let info = lesson.date.toUTCString().split(" ")
-        let date = abbrevDayToFull[info[0].replace(",", "")]+", "+ abbrevMonthToFull[info[2]]+" "+String(parseInt(info[1]))+", "+info[3]
-
-        let instructors = lesson.instructors
-
-        let googleMapsUrl = googleURl.getGoogleMapsURl(lesson.address)
-
-        const endtime = new Date(`March 12, 2023 ${lesson.time}`);
-        endtime.setHours(endtime.getHours() + 1);
-        const updatedTimeStr = endtime.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
-
-        let time = lesson.time + " - "+ updatedTimeStr
-
-        let streetAddress = lesson.address.subString(0, lesson.address.indexOf(","))
-        let cityStateZipaddress = lesson.address.subString(lesson.address.indexOf(",")+1, lesson.address.length)
-        reminderEmail.generateEmailBodyHTML(date,time,instructors,location,googleMapsUrl,streetAddress,cityStateZipaddress)
-    }
-    catch(err){
-        console.log("ERROR")
-        return "ERROR"
-    }
-}
 module.exports = {getReminderBody}

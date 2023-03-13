@@ -7,11 +7,11 @@ const Schedule = require("../../utils/reminders/getLessonScheduling")
 
 const sendAnnouncementDefinition = (agenda) => {
     agenda.define("scheduleAnnouncements", { shouldSaveResult: true, concurrency: 100, priority: 10 }, async(job, done)=>{
+        console.log("sending")
         let dates = await Schedule.getLessonScheduling()
         for(let i = 0; i<dates.length;i++){
             agenda.schedule(dates[i], "sendAnnouncement")
         }
-        console.log("announcements scheduled")
     })
     agenda.define("sendAnnouncement",  { shouldSaveResult: true, concurrency: 100, priority: 10 }, async(job, done)=>{
         let lesson = await Lesson.getTodayLesson()
@@ -39,7 +39,6 @@ const sendAnnouncementDefinition = (agenda) => {
             console.log("ERRORR SENDING ISSUE ")
             done()
         } 
-        console.log("mail sent")
         done();
     })
 }

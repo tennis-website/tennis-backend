@@ -22,7 +22,7 @@ async function getLessonScheduling(){
         return dates
     }
     catch(err){
-        console.log("ERROR")
+        console.log("ERROR Lesson"+ err.message)
         return "ERROR"
     }
 }

@@ -28,7 +28,7 @@ async function getTodayLesson(){
         }
     }
     catch(err){
-        console.log("ERROR")
+        console.log("ERROR Lesson"+ err.message)
         return "ERROR"
     }
 }

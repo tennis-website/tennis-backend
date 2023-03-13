@@ -29,12 +29,10 @@ async function sendMail(emaillist, subject, htmltext) {
         // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
     }
     catch(err){
-        console.log("error " + err.message)
-        console.log("ERROR")
+        console.log("error sending" + err.message)
         return "ERROR"
     }
   }
-  sendMail()
 module.exports =  {sendMail}
 
 /*

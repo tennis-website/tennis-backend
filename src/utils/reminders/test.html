@@ -1,7 +1,4 @@
-async function generateEmailBodyHTML(date,time,instructors,location,googleMapsUrl,streetAddress,cityStateZipaddress) {
-try{
-    return (`
-    <!DOCTYPE html>
+<!DOCTYPE html>
     <html>
     <head>
         <title>Online HTML Editor</title>
@@ -189,19 +186,19 @@ try{
     <body>
         <div class="container">
             <h1 class="Title">LESSON REMINDER</h1>
-            <h2 class ="TopDate">${date}</h2>
+            <h2 class ="TopDate">Monday, March 13, 2023</h2>
             <hr class="hr-style">
-            <h2 class ="Time">${time}</h2>
+            <h2 class ="Time">3:10 PM - 4:10 PM</h2>
             <div class = "background">
                 <h4 class = "InTitle">INSTRUCTORS:</h4>
                 <div class = "instructors">
-                ${instructors.map(instructor => `<p class="name">${instructor}</p>`).join('')}
+                <p class="name">Tarune</p>
             </div>
             </div>
             <div class = "addressbackground">
-                    <p class = "address">${location}</p>
-                    <a class = "address" href = "${googleMapsUrl}" target="_blank">${streetAddress} <br>
-                    ${cityStateZipaddress}</a>
+                    <p class = "address">Westlake High School</p>
+                    <a class = "address" href = "https://www.google.com/maps/search/?api=1&query=100+Lakeview+Canyon+Rd%2C+Thousand+Oaks%2C+CA+91362" target="_blank">100 Lakeview Canyon Rd<br>
+                    Thousand Oaks, CA 91362</a>
             </div>
             <div>
                 <a href="http://localhost:3000/join-lesson" target="_blank">
@@ -221,12 +218,4 @@ try{
             </div>
         </div>
     </body>
-    </html>`);
-    }
-    catch(err){
-        console.log("error html" + err.message )
-        return "ERROR"
-    }
-}
-
-module.exports.generateEmailBodyHTML = generateEmailBodyHTML
+    </html>
