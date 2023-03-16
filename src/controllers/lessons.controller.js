@@ -39,7 +39,7 @@ async function makeLesson(req, res){
             res.status(402).send({ error: "A lesson is already on that Date" })
             return
         }
-        if(time == null){
+        if(time == null || time === ""){
             return res.status(408).send({ error: "Please Enter Time" })
         }
         try{
@@ -48,10 +48,10 @@ async function makeLesson(req, res){
         catch(err){
             return res.status(403).send({ error: "Invalid Time" })
         }
-        if(location == null){
+        if(location == null || location === ""){
             return res.status(409).send({ error: "Please Enter Location" })
         }
-        if(address == null){
+        if(address == null || address  === ""){
             return res.status(407).send({ error: "Please Enter Address" })
         }
         let coordinates =[]
