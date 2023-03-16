@@ -51,7 +51,7 @@ async function makeLesson(req, res){
         if(location == null || location === ""){
             return res.status(409).send({ error: "Please Enter Location" })
         }
-        if(address == null || address  === ""){
+        if(address == null || address  == ""){
             return res.status(407).send({ error: "Please Enter Address" })
         }
         let coordinates =[]
