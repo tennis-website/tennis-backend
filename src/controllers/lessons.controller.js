@@ -79,7 +79,7 @@ async function makeLesson(req, res){
         if(instructors == null || instructors.length ==0){
             return res.status(406).send({ error: "Please Enter Instructors" })
         }
-
+        instructors = instructors.filter(str => str !== '');
         var myId = mongoose.Types.ObjectId()
         await lessonmodel.create({ 
             _id: myId,
