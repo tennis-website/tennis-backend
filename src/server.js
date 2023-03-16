@@ -16,7 +16,7 @@ const PORT = process.env.PORT || 8080;
 const mongoUri = process.env.MONGO_URI
 //for gcloud make sure to not use env
 //const mongoUri = url here
-mongoose.connect("mongodb+srv://Jai_Garg:H3wHp60utQZeZNpN@tennisinitiativecluster.t5zacqa.mongodb.net/?retryWrites=true&w=majority", {dbName: 'TennisInitiativeDB'} );
+mongoose.connect("mongodb+srv://Jai_Garg:H3wHp60utQZeZNpN@tennisinitiativecluster.t5zacqa.mongodb.net/?retryWrites=true&w=majority", {dbName: 'TennisInitiativeDB', useUnifiedTopology: true});
 
 require("./agendaJobs/agenda")
 

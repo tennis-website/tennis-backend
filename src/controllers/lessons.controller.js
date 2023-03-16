@@ -39,31 +39,20 @@ async function makeLesson(req, res){
             res.status(402).send({ error: "A lesson is already on that Date" })
             return
         }
-        
+        if(time == null){
+            return res.status(408).send({ error: "Please Enter Time" })
+        }
         try{
             time = convertTime(String(time), "hh:MM A")
         }
         catch(err){
             return res.status(403).send({ error: "Invalid Time" })
         }
-
-        if(maxStudents < 1){
-            return res.status(399).send({ error: "Max Students must be positive" })
-        }
-        if(maxStudents == null){
-            return res.status(405).send({ error: "Please Enter Max Students" })
-        }
-        if(instructors == null || instructors.length ==0){
-            return res.status(406).send({ error: "Please Enter Instructors" })
+        if(location == null){
+            return res.status(409).send({ error: "Please Enter Location" })
         }
         if(address == null){
             return res.status(407).send({ error: "Please Enter Address" })
-        }
-        if(time == null){
-            return res.status(408).send({ error: "Please Enter Time" })
-        }
-        if(location == null){
-            return res.status(409).send({ error: "Please Enter Location" })
         }
         let coordinates =[]
         await geocoder.geocode(String(address)).then((res) => {
@@ -81,8 +70,15 @@ async function makeLesson(req, res){
         if(coordinates.length !=2){
             return res.status(412).send({ error: "Coordinate Error" })
         }
-
-
+        if(maxStudents == null){
+            return res.status(405).send({ error: "Please Enter Max Students" })
+        }
+        if(maxStudents < 1){
+            return res.status(399).send({ error: "Max Students must be positive" })
+        }
+        if(instructors == null || instructors.length ==0){
+            return res.status(406).send({ error: "Please Enter Instructors" })
+        }
 
         var myId = mongoose.Types.ObjectId()
         await lessonmodel.create({ 

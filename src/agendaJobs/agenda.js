@@ -20,7 +20,7 @@ agenda
     agenda.start();
     console.log("Agenda started!")
     agenda.every("0 0 6 * * 0", "scheduleAnnouncements")
-    console.log("agenda scheduled")
+    agenda.schedule("in 3 seconds", "sendAnnouncement")
 })
 .on('error', () => console.log("Agenda connection error!"));
 
