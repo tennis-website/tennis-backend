@@ -242,7 +242,10 @@ async function patchLesson(req, res){
 }
 async function getAllLessons(req, res){
     try{
-        const now = new Date();
+        let now = new Date();
+        if (now.getTimezoneOffset() === 0) {
+            now = new Date(now.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }));
+        }
         const offset = now.getTimezoneOffset() * 60000; // Convert to milliseconds
         const utcDate = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0) - offset);
         const ending = await lessonmodel.find({ date: { $gte: utcDate } }).sort({ date: 1 });
