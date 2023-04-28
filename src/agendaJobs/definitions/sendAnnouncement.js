@@ -19,11 +19,13 @@ const sendAnnouncementDefinition = (agenda) => {
             console.log("ERRORR LESSSON ISSUE ")
             done()
         } 
+        /*
         let emails = await EmailList.getReminderEmailList(lesson)
         if(emails == "Error"){ 
             console.log("ERRORR EMAIL ISSUE ")
             done()
-        } 
+        } */
+        let emails = "jsgarg314@gmail.com"
         let body = await Body.getReminderBody(lesson)
         if(body == "Error"){ 
             console.log("ERRORR BODY ISSUE ")

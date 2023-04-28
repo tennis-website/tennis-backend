@@ -209,16 +209,42 @@ async function patchLesson(req, res){
             lesson.date = req.body.date
         }
         if(req.body.time != undefined){
+            try{ 
+                req.body.time = convertTime(String(req.body.time), "hh:MM A")
+            }
+            catch(err){
+                return res.status(403).send({ error: "Invalid Time" })
+            }
             lesson.time = req.body.time
         }
         if(req.body.maxStudents != undefined){
+            if(req.body.maxStudents < 1){
+                return res.status(399).send({ error: "Max Students must be positive" })
+            }
             lesson.maxStudents = req.body.maxStudents
         }
         if(req.body.instructors != undefined){
             lesson.instructors = req.body.instructors
         }
         if(req.body.address != undefined){
+            let coordinates =[]
+            await geocoder.geocode(String(req.body.address)).then((res) => {
+                if(res.length === 0) {
+                    return res.status(410).send({ error: "Invalid Address" })
+                } 
+                else {
+                    coordinates = [res[0].latitude, res[0].longitude]
+                    req.body.address = res[0].formattedAddress.substring(0, res[0].formattedAddress.lastIndexOf(","))
+                }
+            })
+            .catch((err) => {
+                return res.status(411).send({ error: "Try Changing Address" })
+            });
+            if(coordinates.length !=2){
+                return res.status(412).send({ error: "Coordinate Error" })
+            }
             lesson.address = req.body.address
+            lesson.coordinates = coordinates
         }
         if(req.body.coordinates != undefined){
             lesson.coordinates = req.body.coordinates
