@@ -204,10 +204,10 @@ try{
                     ${cityStateZipaddress}</a>
             </div>
             <div>
-                <a href="http://localhost:3000/join-lesson" target="_blank">
+                <a href="https://westlaketennisacademy.org/join-lesson" target="_blank">
                     <button class = "green-button-left">EDIT SIGN UP</button>
                 </a>
-                <a href="http://localhost:3000/home" target="_blank"> 
+                <a href="https://westlaketennisacademy.org//home" target="_blank"> 
                 <button class = "green-button-right">VISIT WEBSITE</button>
                 </a>
             </div>
