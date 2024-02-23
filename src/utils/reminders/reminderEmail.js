@@ -216,7 +216,7 @@ try{
                     We look forward to seeing you! If you have any <br>
                     questions please email us at  <br>
                     <a class = "email" href = "mailto:thewestlaketennisacademy@gmail.com">thewestlaketennisacademy@gmail.com</a> or call us  <br>
-                    at (420) 696-9696
+                    at (805) 555-7707
                 </p>
             </div>
         </div>
