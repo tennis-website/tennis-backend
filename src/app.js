@@ -5,6 +5,7 @@ const checkServer = require('./routes/checkServer.routes')
 const user = require("./routes/user.routes")
 const lesson = require("./routes/lessons.routes")
 const request = require("./routes/request.routes")
+const application = require("./routes/application.routes")
 
 const cors = require('cors')
 
@@ -16,6 +17,7 @@ app.use(checkServer)
 app.use(user)
 app.use(lesson)
 app.use(request)
+app.use(application)
 
 app.get('/', (req, res) => {
     const name = process.env.NAME || 'World';

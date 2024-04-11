@@ -5,6 +5,8 @@ require('./models/test.model');
 require("./models/request.model")
 require('./models/user.model');
 require('./models/lesson.model')
+require('./models/application.model')
+
 const app = require('./app');
 const mongoose = require('mongoose');
 
