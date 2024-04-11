@@ -37,6 +37,14 @@ const applicationSchema = new mongoose.Schema({
     school:{
         type: String,
         required: false
+    },
+    experience:{
+        type: String,
+        required: false
+    },
+    why:{
+        type: String,
+        required: false
     } 
 }, {
     versionKey: false

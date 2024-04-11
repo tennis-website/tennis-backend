@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const applicationmodel = mongoose.model('application');
 
 async function submitApplication(req, res){
-    const {type,lastName, firstName, dob, email, age,phone,utr,school} = req.body
+    const {type,lastName, firstName, dob, email, age,phone,utr,school,experience,why} = req.body
     try{
         await applicationmodel.create({ 
             type:type,
@@ -13,7 +13,9 @@ async function submitApplication(req, res){
             age:age,
             phone:phone,
             utr:utr,
-            school:school
+            school:school,
+            experience:experience,
+            why:why
         })
         return res.json("uploaded successfully")
     }
